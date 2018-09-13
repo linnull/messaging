@@ -1,0 +1,9 @@
+# log config
+log_base_path : "/data/app/log"
+log_level : "error"
+
+# registry config
+etcd_address :
+  - "192.168.102.52:2370"
+  - "192.168.102.52:2371"
+  - "192.168.102.52:2372"
