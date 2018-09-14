@@ -9,7 +9,7 @@ import (
 const MESSAGE_MAX_LENGTH = 0x500000 // 5M
 
 var (
-	ErrMessageLengthLimit            = errors.New("message length limit exceeded")
+	ErrMessageLengthLimit          = errors.New("message length limit exceeded")
 	ErrUnexpectedPbMessageLength   = errors.New("unexpected pb message length")
 	ErrUnexpectedPbMessageChecksum = errors.New("unexpected pb message checksum")
 )

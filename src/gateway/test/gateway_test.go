@@ -44,12 +44,12 @@ func TestPacket(t *testing.T) {
 
 	pbMsg := "test test test "
 	msg := &packet.RequestMessage{
-		UUID: 10086,
-		Sequence: 1,
-		MethodId: 1,
-		Length: uint32(len(pbMsg)),
+		UUID:       10086,
+		Sequence:   1,
+		MethodId:   1,
+		Length:     uint32(len(pbMsg)),
 		PbMsgBytes: []byte(pbMsg),
-		CheckSum: adler32.Checksum([]byte(pbMsg)),
+		CheckSum:   adler32.Checksum([]byte(pbMsg)),
 	}
 	messageBytes := make([]byte, 20+msg.Length)
 	binary.BigEndian.PutUint64(messageBytes[0:8], msg.UUID)

@@ -17,9 +17,9 @@ const (
 )
 
 var (
-	ErrPacketLengthLimit            = errors.New("packet length limit exceeded")
-	ErrUnexpectedPacketMagicNum     = errors.New("unexpected packet magic num")
-	ErrUnsupportedPacketProtoType = errors.New("unsupported packet protocol type")
+	ErrPacketLengthLimit             = errors.New("packet length limit exceeded")
+	ErrUnexpectedPacketMagicNum      = errors.New("unexpected packet magic num")
+	ErrUnsupportedPacketProtoType    = errors.New("unsupported packet protocol type")
 	ErrUnexpectedPacketPayloadLength = errors.New("unexpected packet payload length")
 )
 
