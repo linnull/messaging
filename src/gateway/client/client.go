@@ -5,8 +5,7 @@ import (
 
 	proto "gateway/proto"
 	"gateway/server"
-
-	"github.com/micro/go-micro/client"
+	"lib/micro"
 )
 
 type GatewayClient struct {
@@ -14,7 +13,7 @@ type GatewayClient struct {
 }
 
 func NewGatewayClient() *GatewayClient {
-	return &GatewayClient{proto.NewGatewayClient(server.ServiceName, client.NewClient())}
+	return &GatewayClient{proto.NewGatewayClient(server.ServiceName, micro.NewClient())}
 }
 
 func (client *GatewayClient) Echo(ctx context.Context, msg string) (string, error) {

@@ -3,10 +3,9 @@ package client
 import (
 	"context"
 
+	"lib/micro"
 	proto "template/proto"
 	"template/server"
-
-	"github.com/micro/go-micro/client"
 )
 
 type TemplateClient struct {
@@ -14,7 +13,7 @@ type TemplateClient struct {
 }
 
 func NewTemplateClient() *TemplateClient {
-	return &TemplateClient{proto.NewTemplateClient(server.ServiceName, client.NewClient())}
+	return &TemplateClient{proto.NewTemplateClient(server.ServiceName, micro.NewClient())}
 }
 
 func (client *TemplateClient) Echo(ctx context.Context, msg string) (string, error) {

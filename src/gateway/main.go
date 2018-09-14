@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/micro/go-plugins/registry/etcdv3"
 	"log"
 	"time"
 
@@ -26,7 +25,7 @@ func main() {
 		micro.Version(server.ServiceVersion),
 		micro.RegisterTTL(time.Second*60),
 		micro.RegisterInterval(time.Second*10),
-		micro.Registry(etcdv3.NewRegistry()),
+		//micro.Registry(etcdv3.NewRegistry()),
 	)
 	service.Init()
 	proto.RegisterGatewayHandler(service.Server(), new(server.GatewayHandler))
