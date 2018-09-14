@@ -335,13 +335,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/go-yaml/yaml",
-    "github.com/golang/protobuf/proto",
     "github.com/micro/go-micro",
     "github.com/micro/go-micro/client",
     "github.com/micro/go-micro/cmd",
-    "github.com/micro/go-micro/server",
     "github.com/micro/go-plugins/registry/etcdv3",
-    "golang.org/x/net/context",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

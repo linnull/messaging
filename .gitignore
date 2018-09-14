@@ -12,6 +12,8 @@
 *.out
 
 .idea
+*.pb.go
+*.micro.go
 msgbin/
 vendor/
 pkg/
