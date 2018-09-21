@@ -124,3 +124,31 @@ func GetCommandMessageFromPacket(pkg *Packet) (msg *CommandMessage, err error) {
 	}
 	return msg, nil
 }
+
+func MarshalRequestPacket(uuid uint64, methodId uint32, sequence uint32, pbMsgBody []byte) (packetBytes []byte, err error) {
+	msg := &RequestMessage{
+		UUID:       uuid,
+		Sequence:   sequence,
+		MethodId:   methodId,
+		Length:     uint32(len(pbMsgBody)),
+		PbMsgBytes: []byte(pbMsgBody),
+	}
+	messageBytes := make([]byte, 20+msg.Length)
+	binary.BigEndian.PutUint64(messageBytes[0:8], msg.UUID)
+	binary.BigEndian.PutUint32(messageBytes[8:12], msg.MethodId)
+	binary.BigEndian.PutUint32(messageBytes[12:16], msg.Sequence)
+	binary.BigEndian.PutUint32(messageBytes[16:20], msg.Length)
+	copy(messageBytes[20:20+msg.Length], msg.PbMsgBytes)
+	msg.CheckSum = adler32.Checksum(messageBytes)
+	msgBytes, err := msg.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	pkg := &Packet{
+		MagicNumber:  PACKET_MAGIC_NUM,
+		ProtocolType: PROTOCOL_TYPE_REQUEST,
+		Length:       uint32(len(msgBytes)),
+		Payload:      msgBytes,
+	}
+	return pkg.Marshal()
+}

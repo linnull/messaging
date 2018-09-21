@@ -2,9 +2,7 @@ package test
 
 import (
 	"context"
-	"encoding/binary"
 	"fmt"
-	"hash/adler32"
 	"net"
 	"testing"
 	"time"
@@ -43,32 +41,7 @@ func TestPacket(t *testing.T) {
 	defer conn.Close()
 
 	pbMsg := "test test test "
-	msg := &packet.RequestMessage{
-		UUID:       10086,
-		Sequence:   1,
-		MethodId:   1,
-		Length:     uint32(len(pbMsg)),
-		PbMsgBytes: []byte(pbMsg),
-		CheckSum:   adler32.Checksum([]byte(pbMsg)),
-	}
-	messageBytes := make([]byte, 20+msg.Length)
-	binary.BigEndian.PutUint64(messageBytes[0:8], msg.UUID)
-	binary.BigEndian.PutUint32(messageBytes[8:12], msg.MethodId)
-	binary.BigEndian.PutUint32(messageBytes[12:16], msg.Sequence)
-	binary.BigEndian.PutUint32(messageBytes[16:20], msg.Length)
-	copy(messageBytes[20:20+msg.Length], msg.PbMsgBytes)
-	msg.CheckSum = adler32.Checksum(messageBytes)
-	msgBytes, err := msg.Marshal()
-	if err != nil {
-		t.Fatal(err)
-	}
-	pkg := &packet.Packet{
-		MagicNumber:  packet.PACKET_MAGIC_NUM,
-		ProtocolType: packet.PROTOCOL_TYPE_REQUEST,
-		Length:       uint32(len(msgBytes)),
-		Payload:      msgBytes,
-	}
-	pkgBytes, err := pkg.Marshal()
+	pkgBytes, err := packet.MarshalRequestPacket(10086, 1, 1, []byte(pbMsg))
 	if err != nil {
 		t.Fatal(err)
 	}

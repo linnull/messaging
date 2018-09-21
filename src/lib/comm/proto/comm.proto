@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package lib.comm.proto;
+
+message BaseRequest {
+}
+
+message BaseResponse {
+    RET ret = 1;
+    LOGIC_RET logic_ret = 2;
+}
+
+message BaseCommand {
+}
+
+enum RET {
+    SYSTEM_SUCCESS = 0; // 请求成功
+    SYSTEM_FAIL = 1;    // 请求系统错误
+    LOGIC_FAIL = 2;     // 请求逻辑错误
+}
+
+
+enum LOGIC_RET {
+    LOGIC_SUCCESS               = 0;        // 请求成功
+    LOGIC_SYS_ERROR             = 100001;   // 系统内部错误
+    LOGIC_LOGIN_TOKEN_ERROR     = 100101;   // 登陆检验token错误
+}
+
+message LoginRequest {
+    BaseRequest base = 1;
+    string token = 3;
+}
+
+message LoginResponse {
+    BaseResponse base = 1;
+    uint64 uid = 2;
+}

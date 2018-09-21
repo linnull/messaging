@@ -2,17 +2,27 @@ package server
 
 import (
 	"bufio"
-	"lib/packet"
+	"context"
+	"github.com/gogo/protobuf/proto"
+	"lib/comm/proto"
 	"log"
 	"net"
+
+	"lib/comm/method"
+	"lib/micro"
+	"lib/packet"
+
+	"github.com/micro/go-micro/client"
 )
 
 type Proxy struct {
 	uuid      uint64
+	uid       uint64
 	conn      net.Conn
 	rspChan   chan []byte
 	closeChan chan bool
 	isClosed  bool
+	client client.Client
 }
 
 func NewProxy(uuid uint64, conn net.Conn) *Proxy {
@@ -22,6 +32,7 @@ func NewProxy(uuid uint64, conn net.Conn) *Proxy {
 	proxy.isClosed = false
 	proxy.rspChan = make(chan []byte, 1024)
 	proxy.closeChan = make(chan bool)
+	proxy.client = micro.NewClient()
 	return proxy
 }
 
@@ -64,5 +75,12 @@ func (p *Proxy) Close() {
 }
 
 func (p *Proxy) processMessage(msg *packet.RequestMessage) {
-	log.Println(msg)
+	ctx := context.Background()
+	if msg.MethodId == method.MethodId_login {
+		loginReq := &lib_comm_proto.LoginRequest{}
+		proto.Unmarshal(msg.PbMsgBytes, loginReq)
+		loginRsp := &lib_comm_proto.LoginResponse{}
+		req := p.client.NewRequest("messaging_logic_login", "Login.Login", loginReq)
+		p.client.Call(ctx, req, loginRsp)
+	}
 }

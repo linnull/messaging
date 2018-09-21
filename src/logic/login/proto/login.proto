@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package logic.login;
+
+import "lib/comm/proto/comm.proto";
+
+service Login {
+    rpc Echo(EchoRequest) returns (EchoResponse) {}
+    rpc Login(lib.comm.proto.LoginRequest) returns (lib.comm.proto.LoginResponse) {}
+}
+
+message EchoRequest {
+    string msg = 1;
+}
+
+message EchoResponse {
+    string msg = 1;
+}

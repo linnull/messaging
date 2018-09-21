@@ -8,15 +8,16 @@ import (
 	"github.com/micro/go-micro/client"
 )
 
-type TimeWrapper struct {
+type ClientTimeWrapper struct {
 	client.Client
 }
 
-func (l *TimeWrapper) Call(ctx context.Context, req client.Request, rsp interface{}, opts ...client.CallOption) error {
+func (l *ClientTimeWrapper) Call(ctx context.Context, req client.Request, rsp interface{}, opts ...client.CallOption) error {
 	starTime := time.Now()
 	err := l.Client.Call(ctx, req, rsp, opts...)
 	endTime := time.Now()
 	useTime := endTime.UnixNano() - starTime.UnixNano()
+	// todo:监控调用时间
 	if err != nil {
 		log.Printf("[error] %s useTime: %d ms err: %v ", req.Method(), useTime/1000000, err)
 	} else {
@@ -25,6 +26,6 @@ func (l *TimeWrapper) Call(ctx context.Context, req client.Request, rsp interfac
 	return err
 }
 
-func timeWrapper(c client.Client) client.Client {
-	return &TimeWrapper{c}
+func clientTimeWrapper(c client.Client) client.Client {
+	return &ClientTimeWrapper{c}
 }
